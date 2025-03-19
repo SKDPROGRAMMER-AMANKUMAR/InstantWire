@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<style>
+    /* Hover effect for navbar links */
+    .navbar-nav .nav-item .nav-link:hover {
+        color: #ffc107 !important; /* Change text color on hover */
+        transform: scale(1.1); /* Slightly enlarge */
+        transition: 0.3s ease-in-out;
+    }
+
+    /* Hover effect for cards */
+    .news-article {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    
+    .news-article:hover {
+        transform: translateY(-5px); /* Lift card slightly */
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    }
+
+    /* Box shadow for all cards */
+    .news-article {
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-warning" href="/">InstantWire</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" 
+                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% set categories = ["sports", "entertainment", "cricket", "finance", "taekwondo"] %}
+                {% for category in categories %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/?query={{ category }}">{{ category | capitalize }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <form class="d-flex" role="search" method="GET" action="/">
+                <input class="form-control me-2 rounded-pill" type="search" placeholder="Search news..." 
+                       aria-label="Search" name="query">
+                <button class="btn btn-warning rounded-pill" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-2">
+    <h1 class="text-center fw-bold text-dark">Welcome To InstantWire</h1>
+    <div class="row mt-4">
+        {% for article in articles %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm mb-4 news-article">
+                {% if article.urlToImage %}
+                <img src="{{ article.urlToImage }}" alt="News Image" class="card-img-top rounded">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ article.url }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                            {{ article.title }}
+                        </a>
+                    </h5>
+                    <p class="text-muted">{{ article.description }}</p>
+                </div>
+                <div class="card-footer bg-light text-end">
+                    <a href="{{ article.url }}" class="btn btn-sm btn-outline-primary rounded-pill" target="_blank">
+                        Read More
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
